@@ -36,6 +36,21 @@ pipeline {
 			}
 		}
 
+		stage('Unit tests'){
+			steps {
+				sh 'dotnet test --filter "FullyQualifiedName~AuthServiceApp.Tests.ServicesTests.UserServiceTests" --no-build'
+			}
+		}
+
+		stage('Integration tests'){
+			steps {
+				sh '''
+					dotnet test --filter "FullyQualifiedName~AuthServiceApp.Tests.ControllerTests.AuthControllerTests" --no-build
+					dotnet test --filter "FullyQualifiedName~AuthServiceApp.Tests.ControllerTests.UserControllerTests" --no-build 
+				'''
+			}
+		}
+
 		stage('Publish Dev') {
 			when {
 				branch 'dev'
