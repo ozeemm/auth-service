@@ -1,4 +1,4 @@
-﻿using AuthServiceApp.API.Interfaces.Services;
+using AuthServiceApp.API.Interfaces.Services;
 using AuthServiceApp.API.Models.Requets;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

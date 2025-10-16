@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AuthServiceApp.Tests.ServicesTests
 {
+    [Trait("Category", "Unit")]
     public class UserServiceTests : IClassFixture<CustomWebApplicationFactory<Program>>
     {
         private readonly CustomWebApplicationFactory<Program> factory;
