@@ -11,6 +11,7 @@ using System.Net.Http.Json;
 
 namespace AuthServiceApp.Tests.ControllerTests
 {
+    [Trait("Category", "Integration")]
     public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory<Program>>
     {
         private readonly CustomWebApplicationFactory<Program> factory;

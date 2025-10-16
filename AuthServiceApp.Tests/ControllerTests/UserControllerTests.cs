@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 namespace AuthServiceApp.Tests.ControllerTests
 {
+    [Trait("Category", "Integration")]
     public class UserControllerTests : IClassFixture<CustomWebApplicationFactory<Program>>
     {
         private readonly CustomWebApplicationFactory<Program> factory;

@@ -1,4 +1,4 @@
-﻿using AuthServiceApp.API.Data;
+using AuthServiceApp.API.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -20,7 +20,10 @@ namespace AuthServiceApp.Tests
 
                 var config = services.BuildServiceProvider().GetService<IConfiguration>()!;
 
-                var connectionString = config.GetConnectionString("TestsDatabase");
+                //var connectionString = config.GetConnectionString("TestsDatabase");
+                var dbName = $"tests_database_{Guid.NewGuid()}";
+                var connectionString = $"Filename=./{dbName}.db";
+
                 services.AddSqlite<ApplicationDbContext>(connectionString);
             });
         }

@@ -38,16 +38,13 @@ pipeline {
 
 		stage('Unit tests'){
 			steps {
-				sh 'dotnet test --filter "FullyQualifiedName~AuthServiceApp.Tests.ServicesTests.UserServiceTests" --no-build'
+				sh 'dotnet test --filter "Category=Unit" --no-build'
 			}
 		}
 
 		stage('Integration tests'){
 			steps {
-				sh '''
-					dotnet test --filter "FullyQualifiedName~AuthServiceApp.Tests.ControllerTests.AuthControllerTests" --no-build
-					dotnet test --filter "FullyQualifiedName~AuthServiceApp.Tests.ControllerTests.UserControllerTests" --no-build 
-				'''
+				sh 'dotnet test --filter "Category=Integration" --no-build'
 			}
 		}
 
