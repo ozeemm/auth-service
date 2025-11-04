@@ -1,4 +1,4 @@
-﻿using AuthServiceApp.API.Settings;
+using AuthServiceApp.API.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -116,7 +116,7 @@ namespace AuthServiceApp.API
             builder.Services.AddControllers();
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlite(builder.Configuration.GetConnectionString("Database"));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("Database"));
             });
 
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.SectionName));
@@ -137,6 +137,15 @@ namespace AuthServiceApp.API
 
             app.UseAuthorization();
             app.MapControllers();
+
+            app.UseStaticFiles();
+
+            app.MapGet("/", async context =>
+            {
+                context.Response.ContentType = "text/html";
+                await context.Response.SendFileAsync(
+                    Path.Combine(builder.Environment.WebRootPath, "index.html"));
+            });
 
             app.Run();
         }

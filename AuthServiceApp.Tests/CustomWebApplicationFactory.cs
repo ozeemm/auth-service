@@ -20,11 +20,10 @@ namespace AuthServiceApp.Tests
 
                 var config = services.BuildServiceProvider().GetService<IConfiguration>()!;
 
-                //var connectionString = config.GetConnectionString("TestsDatabase");
-                var dbName = $"tests_database_{Guid.NewGuid()}";
-                var connectionString = $"Filename=./{dbName}.db";
-
-                services.AddSqlite<ApplicationDbContext>(connectionString);
+                var connectionString = config.GetConnectionString("TestsDatabase");
+                connectionString = connectionString!.Replace("Database=devops_authservice_tests", $"Database=devops_authservice_tests_{Guid.NewGuid()}");
+                
+                services.AddNpgsql<ApplicationDbContext>(connectionString);
             });
         }
 
