@@ -15,14 +15,14 @@ namespace AuthServiceApp.Tests
             builder.ConfigureTestServices(services =>
             {
                 var appDatabase = services.SingleOrDefault(s => s.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
-                if(appDatabase != null)
+                if (appDatabase != null)
                     services.Remove(appDatabase);
 
                 var config = services.BuildServiceProvider().GetService<IConfiguration>()!;
 
                 var connectionString = config.GetConnectionString("TestsDatabase");
                 connectionString = connectionString!.Replace("Database=devops_authservice_tests", $"Database=devops_authservice_tests_{Guid.NewGuid()}");
-                
+
                 services.AddNpgsql<ApplicationDbContext>(connectionString);
             });
         }

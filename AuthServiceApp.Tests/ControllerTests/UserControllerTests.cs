@@ -35,7 +35,7 @@ namespace AuthServiceApp.Tests.ControllerTests
             response1.EnsureSuccessStatusCode();
 
             var usersListBefore = JsonConvert.DeserializeObject<IEnumerable<User>>(await response1.Content.ReadAsStringAsync())!;
-            
+
             var newUser = new User
             {
                 Id = Guid.NewGuid(),
@@ -54,5 +54,5 @@ namespace AuthServiceApp.Tests.ControllerTests
             Assert.Equal(1, usersListAfter.Count() - usersListBefore.Count());
         }
     }
-        
+
 }

@@ -28,7 +28,7 @@ namespace AuthServiceApp.API.Services
                 .Where(u => u.Username == username)
                 .AnyAsync();
 
-            if(isUserExist)
+            if (isUserExist)
                 return null;
 
             var user = new User();
@@ -66,7 +66,8 @@ namespace AuthServiceApp.API.Services
 
             var jti = Guid.NewGuid().ToString();
 
-            var tokenDto = new TokenDto {
+            var tokenDto = new TokenDto
+            {
                 AccessToken = jwtService.GenerateAccessToken(GetClaims(user, jti)),
                 RefreshToken = jwtService.GenerateRefreshToken()
             };
@@ -96,7 +97,7 @@ namespace AuthServiceApp.API.Services
                 return null;
 
             var user = await context.Users.FindAsync(Guid.Parse(userId));
-            
+
             if (user is null)
                 return null;
 

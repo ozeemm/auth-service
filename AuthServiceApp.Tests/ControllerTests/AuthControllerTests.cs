@@ -139,7 +139,7 @@ namespace AuthServiceApp.Tests.ControllerTests
 
             var tokens = JsonConvert.DeserializeObject<TokenDto>(await loginResponse.Content.ReadAsStringAsync());
 
-            var refreshResponse = await client.PostAsJsonAsync("/api/auth/refresh", new RefreshTokensRequest 
+            var refreshResponse = await client.PostAsJsonAsync("/api/auth/refresh", new RefreshTokensRequest
             {
                 AccessToken = tokens!.AccessToken,
                 RefreshToken = tokens.RefreshToken

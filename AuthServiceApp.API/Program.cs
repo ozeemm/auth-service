@@ -37,7 +37,8 @@ namespace AuthServiceApp.API
                         RequireSignedTokens = true,
                     };
 
-                    options.Events = new JwtBearerEvents {
+                    options.Events = new JwtBearerEvents
+                    {
                         OnTokenValidated = async (context) =>
                         {
                             var claims = context.Principal?.Claims.ToList();
@@ -58,7 +59,7 @@ namespace AuthServiceApp.API
                                 context.Fail("Empty user id in JWT-token");
                                 return;
                             }
-                            
+
                             var user = await dbContext.Users.FindAsync(Guid.Parse(userId));
                             if (user is null)
                             {
@@ -125,7 +126,7 @@ namespace AuthServiceApp.API
             builder.Services.AddScoped<IUserService, UserService>();
 
             var app = builder.Build();
-           
+
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();

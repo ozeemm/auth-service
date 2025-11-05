@@ -15,6 +15,12 @@ pipeline {
 			}
 		}
 
+		stage('Format') {
+			steps {
+				sh 'dotnet format --verify-no-changes --no-restore'
+			}
+		}
+
 		stage('Build Dev'){
 			when {
 				expression { 
