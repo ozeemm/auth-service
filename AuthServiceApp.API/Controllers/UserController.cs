@@ -1,4 +1,5 @@
-﻿using AuthServiceApp.API.Interfaces.Services;
+using AuthServiceApp.API.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthServiceApp.API.Controllers
@@ -8,6 +9,7 @@ namespace AuthServiceApp.API.Controllers
     public class UserController(
         IUserService userService) : Controller
     {
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Get()
         {

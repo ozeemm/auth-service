@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Service</title>
+    <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="forms-section">
+            <div class="form-container">
+                <h2 id="environmentHeader">Environment:</h2>
+                <a href="/swagger"><button class="btn" style="background-color: green;">Swagger</button></a>
+            </div>
+            <div id="authStatusContainer" class="form-container" style="display: none;">
+                <h2 id="authStatus" style="color: green">Не авторизован</h2>
+                <button class="btn" id="logoutButton" style="background-color: red;">Выйти</button>
+            </div>
+
+            <div id="getUsersContainer" class="form-container" style="display: none;">
+                <h2>Список пользователей</h2>
+                <button class="btn" id="getUsersButton">Получить</button>
+                <div id="usersList">
+
+                </div>
+            </div>
+
+            <div class="form-container" id="loginContainer">
+                <h2>Авторизация</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginUsername">Имя пользователя</label>
+                        <input type="text" id="loginUsername" placeholder="Введите ваше имя пользователя" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Пароль</label>
+                        <input type="password" id="loginPassword" placeholder="Введите ваш пароль" required>
+                    </div>
+                    <button type="submit" class="btn">Войти</button>
+                </form>
+            </div>
+
+            <div class="form-container" id="registerContainer">
+                <h2>Регистрация</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="regUsername">Имя пользователя</label>
+                        <input type="text" id="regUsername" placeholder="Придумайте имя пользователя" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Пароль</label>
+                        <input type="password" id="regPassword" placeholder="Придумайте пароль" required>
+                    </div>
+                    <button type="submit" class="btn">Зарегистрироваться</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>

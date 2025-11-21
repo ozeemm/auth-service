@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestPlatform.Utilities;
+using Xunit.Abstractions;
 
 namespace AuthServiceApp.Tests
 {
@@ -15,16 +17,15 @@ namespace AuthServiceApp.Tests
             builder.ConfigureTestServices(services =>
             {
                 var appDatabase = services.SingleOrDefault(s => s.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
-                if(appDatabase != null)
+                if (appDatabase != null)
                     services.Remove(appDatabase);
 
                 var config = services.BuildServiceProvider().GetService<IConfiguration>()!;
 
-                //var connectionString = config.GetConnectionString("TestsDatabase");
-                var dbName = $"tests_database_{Guid.NewGuid()}";
-                var connectionString = $"Filename=./{dbName}.db";
+                var connectionString = config.GetConnectionString("TestsDatabase");
+                connectionString = connectionString!.Replace("Database=devops_authservice_tests", $"Database=devops_authservice_tests_{Guid.NewGuid()}");
 
-                services.AddSqlite<ApplicationDbContext>(connectionString);
+                services.AddNpgsql<ApplicationDbContext>(connectionString);
             });
         }
 

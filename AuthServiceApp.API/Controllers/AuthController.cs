@@ -15,10 +15,10 @@ namespace AuthServiceApp.API.Controllers
         public async Task<IActionResult> Register(UserRequest request)
         {
             var user = await authService.RegisterAsync(request.Username, request.Password);
-            
+
             if (user is null)
                 return BadRequest("User already exist");
-            
+
             return Ok(user);
         }
 
@@ -54,7 +54,7 @@ namespace AuthServiceApp.API.Controllers
                 .Trim();
 
             var result = await authService.LogoutAsync(accessToken);
-            
+
             if (result)
                 return Ok();
 

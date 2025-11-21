@@ -1,4 +1,4 @@
-﻿using AuthServiceApp.API.Data;
+using AuthServiceApp.API.Data;
 using AuthServiceApp.API.Entities;
 using AuthServiceApp.API.Interfaces.Services;
 using AuthServiceApp.API.Models.Dtos;
@@ -22,13 +22,13 @@ namespace AuthServiceApp.API.Services
             };
         }
 
-        public async Task<User?> RegisterAsync(string username, string password)
+        public async Task<UserDto?> RegisterAsync(string username, string password)
         {
             var isUserExist = await context.Users
                 .Where(u => u.Username == username)
                 .AnyAsync();
 
-            if(isUserExist)
+            if (isUserExist)
                 return null;
 
             var user = new User();
@@ -43,7 +43,13 @@ namespace AuthServiceApp.API.Services
             await context.Users.AddAsync(user);
             await context.SaveChangesAsync();
 
-            return user;
+            var userDto = new UserDto
+            {
+                Id = user.Id,
+                Username = user.Username
+            };
+
+            return userDto;
         }
 
         public async Task<TokenDto?> LoginAsync(string username, string password)
@@ -60,7 +66,8 @@ namespace AuthServiceApp.API.Services
 
             var jti = Guid.NewGuid().ToString();
 
-            var tokenDto = new TokenDto {
+            var tokenDto = new TokenDto
+            {
                 AccessToken = jwtService.GenerateAccessToken(GetClaims(user, jti)),
                 RefreshToken = jwtService.GenerateRefreshToken()
             };
@@ -90,7 +97,7 @@ namespace AuthServiceApp.API.Services
                 return null;
 
             var user = await context.Users.FindAsync(Guid.Parse(userId));
-            
+
             if (user is null)
                 return null;
 

@@ -1,4 +1,4 @@
-﻿using AuthServiceApp.API.Settings;
+using AuthServiceApp.API.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -37,7 +37,8 @@ namespace AuthServiceApp.API
                         RequireSignedTokens = true,
                     };
 
-                    options.Events = new JwtBearerEvents {
+                    options.Events = new JwtBearerEvents
+                    {
                         OnTokenValidated = async (context) =>
                         {
                             var claims = context.Principal?.Claims.ToList();
@@ -58,7 +59,7 @@ namespace AuthServiceApp.API
                                 context.Fail("Empty user id in JWT-token");
                                 return;
                             }
-                            
+
                             var user = await dbContext.Users.FindAsync(Guid.Parse(userId));
                             if (user is null)
                             {
@@ -116,7 +117,7 @@ namespace AuthServiceApp.API
             builder.Services.AddControllers();
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlite(builder.Configuration.GetConnectionString("Database"));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("Database"));
             });
 
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.SectionName));
@@ -125,7 +126,7 @@ namespace AuthServiceApp.API
             builder.Services.AddScoped<IUserService, UserService>();
 
             var app = builder.Build();
-           
+
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
@@ -137,6 +138,23 @@ namespace AuthServiceApp.API
 
             app.UseAuthorization();
             app.MapControllers();
+
+            app.UseStaticFiles();
+
+            app.MapGet("/", async context =>
+            {
+                context.Response.ContentType = "text/html";
+                await context.Response.SendFileAsync(
+                    Path.Combine(builder.Environment.WebRootPath, "index.html"));
+            });
+
+            app.MapGet("/api/environment/isDevelopment", () =>
+            {
+                return new
+                {
+                    isDevelopment = app.Environment.IsDevelopment()
+                };
+            });
 
             app.Run();
         }

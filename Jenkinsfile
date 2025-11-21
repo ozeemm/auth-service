@@ -2,6 +2,7 @@ pipeline {
 	agent any
 
 	stages {
+
 		stage('Checkout') {
 			steps {
 				checkout scm
@@ -11,6 +12,12 @@ pipeline {
 		stage('Restore Dependencies') {
 			steps {
 				sh 'dotnet restore'
+			}
+		}
+
+		stage('Format') {
+			steps {
+				sh 'dotnet format --verify-no-changes --no-restore'
 			}
 		}
 
@@ -36,35 +43,58 @@ pipeline {
 			}
 		}
 
+		stage('Docker Compose Tests Up') {
+			steps {
+				sh '''
+					docker-compose -f docker-compose.tests.yml up -d
+					sleep 5
+				'''
+			}
+		}
+
 		stage('Unit tests'){
+			environment{
+				ConnectionStrings__TestsDatabase = "Host=localhost;Port=5432;Database=devops_authservice_tests;Username=postgres;Password=postgres"
+			}
+
 			steps {
 				sh 'dotnet test --filter "Category=Unit" --no-build'
 			}
 		}
 
 		stage('Integration tests'){
+			environment{
+				ConnectionStrings__TestsDatabase = "Host=localhost;Port=5432;Database=devops_authservice_tests;Username=postgres;Password=postgres"
+			}
+			
 			steps {
 				sh 'dotnet test --filter "Category=Integration" --no-build'
 			}
 		}
 
-		stage('Publish Dev') {
+		stage('Docker Compose Build Dev') {
 			when {
 				branch 'dev'
 			}
 
 			steps {
-				sh 'dotnet publish --configuration Debug --self-contained false --output ./publish'
+				sh '''
+					docker-compose -f docker-compose.development.yml down
+					docker-compose -f docker-compose.development.yml build --no-cache
+				'''
 			}
 		}
 
-		stage('Publish Release') {
+		stage('Docker Compose Build Release') {
 			when {
 				branch 'main'
 			}
 
 			steps {
-				sh 'dotnet publish --configuration Release --self-contained false --output ./publish'
+				sh '''
+					docker-compose -f docker-compose.release.yml down
+					docker-compose -f docker-compose.release.yml build --no-cache
+				'''
 			}
 		}
 
@@ -75,7 +105,7 @@ pipeline {
 
 			steps {
 				sh '''
-                    sudo systemctl restart AuthServiceApp_Dev
+                    docker-compose -f docker-compose.development.yml up -d
 					sleep 5
 					curl -f http://localhost:5127/api/Examples/health || exit 1
 				'''
@@ -89,11 +119,17 @@ pipeline {
 
 			steps {
 				sh '''
-                    sudo systemctl restart AuthServiceApp_Main
+                    docker-compose -f docker-compose.release.yml up -d
 					sleep 5
 					curl -f http://localhost:5128/api/Examples/health || exit 1
 				'''
 			}
+		}
+	}
+
+	post {
+		always {
+			sh 'docker-compose -f docker-compose.tests.yml down --rmi all --volumes --remove-orphans'
 		}
 	}
 }

@@ -36,7 +36,7 @@ namespace AuthServiceApp.Tests.ServicesTests
         {
             var usersCountFromDbBefore = await context.Users.CountAsync();
             var usersBefore = await userService.GetUsers();
-            
+
             Assert.Equal(usersCountFromDbBefore, usersBefore.Count());
 
             var newUser = new User
@@ -51,7 +51,7 @@ namespace AuthServiceApp.Tests.ServicesTests
 
             var usersCountFromDbAfter = await context.Users.CountAsync();
             var usersAfter = await userService.GetUsers();
-            
+
             Assert.Equal(usersCountFromDbAfter, usersAfter.Count());
         }
     }
