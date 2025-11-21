@@ -45,13 +45,16 @@ pipeline {
 
 		stage('Docker Compose Tests Up') {
 			steps {
-				sh 'docker-compose -f docker-compose.tests.yml up -d'
+				sh '''
+					docker-compose -f docker-compose.tests.yml up -d
+					sleep 5
+				'''
 			}
 		}
 
 		stage('Unit tests'){
 			environment{
-				ConnectionStrings__TestsDatabase = "Host=db;Port=5432;Database=devops_authservice_tests;Username=postgres;Password=postgres"
+				ConnectionStrings__TestsDatabase = "Host=localhost;Port=5432;Database=devops_authservice_tests;Username=postgres;Password=postgres"
 			}
 
 			steps {
@@ -61,7 +64,7 @@ pipeline {
 
 		stage('Integration tests'){
 			environment{
-				ConnectionStrings__TestsDatabase = "Host=db;Port=5432;Database=devops_authservice_tests;Username=postgres;Password=postgres"
+				ConnectionStrings__TestsDatabase = "Host=localhost;Port=5432;Database=devops_authservice_tests;Username=postgres;Password=postgres"
 			}
 			
 			steps {

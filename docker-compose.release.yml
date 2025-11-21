@@ -1,4 +1,5 @@
-name: devops_auth_service_release
+version: '3.8'
+
 services:
   auth_service:
     container_name: devops_auth_service_release
