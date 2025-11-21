@@ -1,0 +1,36 @@
+name: devops_auth_service_release
+services:
+  auth_service:
+    container_name: devops_auth_service_release
+    build:
+      dockerfile: Dockerfile.release  
+    environment:
+      - ConnectionStrings__Database=Host=db;Port=5432;Database=devops_authservice;Username=postgres;Password=postgres
+      - ConnectionStrings__TestsDatabase=Host=db;Port=5432;Database=devops_authservice_tests;Username=postgres;Password=postgres
+    ports:
+      - "5128:8080"
+    depends_on:
+      - db
+    networks:
+      - app-network
+      
+  
+  db:
+    container_name: devops_database_release  
+    image: postgres:latest
+    ports: 
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db_data:/var/lib/postgresql
+    networks:
+      - app-network
+
+volumes:
+  db_data:    
+      
+networks:
+  app-network:
+    driver: bridge

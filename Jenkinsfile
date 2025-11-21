@@ -55,23 +55,29 @@ pipeline {
 			}
 		}
 
-		stage('Publish Dev') {
+		stage('Docker Compose Build Dev') {
 			when {
 				branch 'dev'
 			}
 
 			steps {
-				sh 'dotnet publish --configuration Debug --self-contained false --output ./publish'
+				sh '''
+					docker-compose -f docker-compose.development.yml down
+					docker-compose -f docker-compose.development.yml build --no-cache
+				'''
 			}
 		}
 
-		stage('Publish Release') {
+		stage('Docker Compose Build Release') {
 			when {
 				branch 'main'
 			}
 
 			steps {
-				sh 'dotnet publish --configuration Release --self-contained false --output ./publish'
+				sh '''
+					docker-compose -f docker-compose.release.yml down
+					docker-compose -f docker-compose.release.yml build --no-cache
+				'''
 			}
 		}
 
@@ -82,7 +88,7 @@ pipeline {
 
 			steps {
 				sh '''
-                    sudo systemctl restart AuthServiceApp_Dev
+                    docker-compose -f docker-compose.development.yml up -d
 					sleep 5
 					curl -f http://localhost:5127/api/Examples/health || exit 1
 				'''
@@ -96,7 +102,7 @@ pipeline {
 
 			steps {
 				sh '''
-                    sudo systemctl restart AuthServiceApp_Main
+                    docker-compose -f docker-compose.release.yml up -d
 					sleep 5
 					curl -f http://localhost:5128/api/Examples/health || exit 1
 				'''

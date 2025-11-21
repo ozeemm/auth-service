@@ -148,6 +148,14 @@ namespace AuthServiceApp.API
                     Path.Combine(builder.Environment.WebRootPath, "index.html"));
             });
 
+            app.MapGet("/api/environment/isDevelopment", () =>
+            {
+                return new
+                {
+                    isDevelopment = app.Environment.IsDevelopment()
+                };
+            });
+
             app.Run();
         }
     }

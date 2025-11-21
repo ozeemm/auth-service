@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auth Service</title>
-    <link rel="stylesheet" href="./styles.css"/>
+    <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-    <div class="container">        
-
+    <div class="container">
         <div class="forms-section">
+            <div class="form-container">
+                <h2 id="environmentHeader">Environment:</h2>
+                <a href="/swagger"><button class="btn" style="background-color: green;">Swagger</button></a>
+            </div>
             <div id="authStatusContainer" class="form-container" style="display: none;">
                 <h2 id="authStatus" style="color: green">Не авторизован</h2>
                 <button class="btn" id="logoutButton" style="background-color: red;">Выйти</button>
@@ -37,7 +40,7 @@
                     <button type="submit" class="btn">Войти</button>
                 </form>
             </div>
-                        
+
             <div class="form-container" id="registerContainer">
                 <h2>Регистрация</h2>
                 <form id="registerForm">

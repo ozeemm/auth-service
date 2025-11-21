@@ -10,6 +10,7 @@ const getUsersButton = document.querySelector("#getUsersButton")
 const logoutButton = document.querySelector("#logoutButton")
 const usersList = document.querySelector("#usersList")
 const authStatus = document.querySelector("#authStatus")
+const environmentHeader = document.querySelector("#environmentHeader")
 
 let accessToken = null
 let refreshToken = null
@@ -29,6 +30,13 @@ function showAuthedBlocks(){
     registerContainer.style.display = "none"
     usersList.innerHTML = ""
 }
+
+window.addEventListener('load', async () => {
+    const response = await fetch('/api/environment/isDevelopment')
+    const data = await response.json()
+
+    environmentHeader.innerText = 'Environment: ' + (data.isDevelopment ? 'Development' : 'Release');
+})
 
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault()
@@ -80,10 +88,14 @@ registerForm.addEventListener('submit', async (e) => {
         })
     })
 
+    registerForm.reset();
+
     if(!response.ok){
         alert('Пользователь существует')
         return
     }
+
+    alert(`Пользователь ${username} успешно зарегистрирован`)
 })
 
 getUsersButton.addEventListener('click', async (e) => {
