@@ -4,6 +4,7 @@ services:
   auth_service:
     container_name: devops_auth_service_development
     build:
+      context: .
       dockerfile: Dockerfile.development  
     environment:
       ASPNETCORE_ENVIRONMENT: Development
