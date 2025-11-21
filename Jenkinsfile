@@ -72,12 +72,6 @@ pipeline {
 			}
 		}
 
-		stage('Docker Compose Tests Down') {
-			steps {
-				sh 'docker-compose -f docker-compose.tests.yml down'
-			}
-		}
-
 		stage('Docker Compose Build Dev') {
 			when {
 				branch 'dev'
@@ -130,6 +124,12 @@ pipeline {
 					curl -f http://localhost:5128/api/Examples/health || exit 1
 				'''
 			}
+		}
+	}
+
+	post {
+		always {
+			sh 'docker-compose -f docker-compose.tests.yml down'
 		}
 	}
 }
