@@ -1,0 +1,10 @@
+name: devops_auth_service_tests
+services:
+  db:
+    container_name: devops_database_tests
+    image: postgres:latest
+    ports: 
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres

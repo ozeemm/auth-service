@@ -43,15 +43,35 @@ pipeline {
 			}
 		}
 
+		stage('Docker Compose Tests Up') {
+			steps {
+				sh 'docker-compose -f docker-compose.tests.yml up -d'
+			}
+		}
+
 		stage('Unit tests'){
+			environment{
+				ConnectionStrings__TestsDatabase = "Host=db;Port=5432;Database=devops_authservice_tests;Username=postgres;Password=postgres"
+			}
+
 			steps {
 				sh 'dotnet test --filter "Category=Unit" --no-build'
 			}
 		}
 
 		stage('Integration tests'){
+			environment{
+				ConnectionStrings__TestsDatabase = "Host=db;Port=5432;Database=devops_authservice_tests;Username=postgres;Password=postgres"
+			}
+			
 			steps {
 				sh 'dotnet test --filter "Category=Integration" --no-build'
+			}
+		}
+
+		stage('Docker Compose Tests Down') {
+			steps {
+				sh 'docker-compose -f docker-compose.tests.yml down'
 			}
 		}
 

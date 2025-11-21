@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{02EA68
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.development.yml = docker-compose.development.yml
 		docker-compose.release.yml = docker-compose.release.yml
+		docker-compose.tests.yml = docker-compose.tests.yml
 		Dockerfile.development = Dockerfile.development
 		Dockerfile.release = Dockerfile.release
 	EndProjectSection
