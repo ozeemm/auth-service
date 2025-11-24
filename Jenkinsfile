@@ -46,7 +46,7 @@ pipeline {
 		stage('Docker Compose Tests Up') {
 			steps {
 				sh '''
-					docker-compose -f docker-compose.tests.yml up -d
+					docker-compose -f docker-compose.tests.yml -p tests-db up -d
 					sleep 5
 				'''
 			}
@@ -129,7 +129,7 @@ pipeline {
 
 	post {
 		always {
-			sh 'docker-compose -f docker-compose.tests.yml down'
+			sh 'docker-compose -f docker-compose.tests.yml -p tests-db down'
 		}
 	}
 }
