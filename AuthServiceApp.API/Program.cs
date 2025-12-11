@@ -20,6 +20,16 @@ namespace AuthServiceApp.API
 
             builder.Services.AddAuthorization();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -127,32 +137,31 @@ namespace AuthServiceApp.API
 
             var app = builder.Build();
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-                app.UseSwaggerUI(options =>
-                {
-                    options.SwaggerEndpoint("/openapi/v1.json", "OpenAPI v1");
-                });
-            }
+            //if (app.Environment.IsDevelopment())
+            //{
+            //    app.MapOpenApi();
+            //    app.UseSwaggerUI(options =>
+            //    {
+            //        options.SwaggerEndpoint("/openapi/v1.json", "OpenAPI v1");
+            //    });
+            //}
 
+            app.MapOpenApi();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/openapi/v1.json", "OpenAPI v1");
+            });
+
+            app.UseCors("CorsPolicy");
             app.UseAuthorization();
             app.MapControllers();
 
-            app.UseStaticFiles();
-
-            app.MapGet("/", async context =>
-            {
-                context.Response.ContentType = "text/html";
-                await context.Response.SendFileAsync(
-                    Path.Combine(builder.Environment.WebRootPath, "index.html"));
-            });
-
-            app.MapGet("/api/environment/isDevelopment", () =>
+            app.MapGet("/api/Environment/isDevelopment", () =>
             {
                 return new
                 {
-                    isDevelopment = app.Environment.IsDevelopment()
+                    //isDevelopment = app.Environment.IsDevelopment()
+                    isDevelopment = true
                 };
             });
 

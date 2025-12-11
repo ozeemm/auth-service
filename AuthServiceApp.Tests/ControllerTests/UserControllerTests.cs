@@ -16,8 +16,6 @@ namespace AuthServiceApp.Tests.ControllerTests
         private readonly CustomWebApplicationFactory<Program> factory;
         private readonly ApplicationDbContext context;
 
-        private readonly string jwtToken;
-
         public UserControllerTests(CustomWebApplicationFactory<Program> factory)
         {
             this.factory = factory;
@@ -91,7 +89,7 @@ namespace AuthServiceApp.Tests.ControllerTests
             var loginResponse = await client.PostAsJsonAsync("/api/auth/login", request);
             loginResponse.EnsureSuccessStatusCode();
 
-            var tokens = JsonConvert.DeserializeObject<TokenDto>(await loginResponse.Content.ReadAsStringAsync());
+            var tokens = JsonConvert.DeserializeObject<TokenDto>(await loginResponse.Content.ReadAsStringAsync())!;
 
             return tokens;
         }

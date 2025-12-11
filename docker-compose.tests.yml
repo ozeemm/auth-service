@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   db:
-    container_name: devops_database_tests
+    container_name: devops_auth_service_database_tests
     image: postgres:latest
     ports: 
       - "5432:5432"
