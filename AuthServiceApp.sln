@@ -16,11 +16,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthServiceApp.Tests", "Aut
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
-		docker-compose.development.yml = docker-compose.development.yml
-		docker-compose.release.yml = docker-compose.release.yml
 		docker-compose.tests.yml = docker-compose.tests.yml
-		Dockerfile.development = Dockerfile.development
-		Dockerfile.release = Dockerfile.release
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
+		nginx.conf = nginx.conf
 	EndProjectSection
 EndProject
 Global

@@ -72,19 +72,6 @@ pipeline {
 			}
 		}
 
-		stage('Docker Compose Build Dev') {
-			when {
-				branch 'dev'
-			}
-
-			steps {
-				sh '''
-					docker-compose -f docker-compose.development.yml down
-					docker-compose -f docker-compose.development.yml build --no-cache
-				'''
-			}
-		}
-
 		stage('Docker Compose Build Release') {
 			when {
 				branch 'main'
@@ -92,22 +79,8 @@ pipeline {
 
 			steps {
 				sh '''
-					docker-compose -f docker-compose.release.yml down
-					docker-compose -f docker-compose.release.yml build --no-cache
-				'''
-			}
-		}
-
-		stage('Run Dev') {
-			when {
-				branch 'dev'
-			}
-
-			steps {
-				sh '''
-                    docker-compose -f docker-compose.development.yml up -d
-					sleep 5
-					curl -f http://localhost:5127/api/Examples/health || exit 1
+					docker-compose -f docker-compose.yml down
+					docker-compose -f docker-compose.yml build --no-cache
 				'''
 			}
 		}
@@ -119,7 +92,7 @@ pipeline {
 
 			steps {
 				sh '''
-                    docker-compose -f docker-compose.release.yml up -d
+                    docker-compose -f docker-compose.yml up -d
 					sleep 5
 					curl -f http://localhost:5128/api/Examples/health || exit 1
 				'''
