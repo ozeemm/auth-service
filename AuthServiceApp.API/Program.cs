@@ -129,6 +129,7 @@ namespace AuthServiceApp.API
             {
                 options.UseNpgsql(builder.Configuration.GetConnectionString("Database"));
             });
+            builder.Services.AddHealthChecks();
 
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.SectionName));
             builder.Services.AddScoped<IJwtService, JwtService>();
@@ -155,6 +156,7 @@ namespace AuthServiceApp.API
             app.UseCors("CorsPolicy");
             app.UseAuthorization();
             app.MapControllers();
+            app.MapHealthChecks("/health");
 
             app.MapGet("/api/Environment/isDevelopment", () =>
             {

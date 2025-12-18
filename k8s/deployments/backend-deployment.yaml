@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: devops-auth
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: authserviceapp-backend:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ConnectionStrings__Database
+          value: "Host=postgres-service;Port=5432;Database=devops_authservice;Username=postgres;Password=postgres"
+        - name: ConnectionStrings__TestsDatabase
+          value: "Host=postgres-service;Port=5432;Database=devops_authservice_tests;Username=postgres;Password=postgres"
