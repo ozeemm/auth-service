@@ -16,6 +16,6 @@ spec:
       containers:
       - name: frontend
         image: authserviceapp-client:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Never
         ports:
         - containerPort: 4173

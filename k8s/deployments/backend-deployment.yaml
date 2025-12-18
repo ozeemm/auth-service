@@ -16,7 +16,7 @@ spec:
       containers:
       - name: backend
         image: authserviceapp-backend:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Never
         ports:
         - containerPort: 8080
         env:
